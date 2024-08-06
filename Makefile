@@ -1,3 +1,7 @@
+NAME = libft.a
+CC = cc
+CFLAGS = -g -Wall -Wextra -Werror
+
 SRC = ft_atoi.c \
 		ft_bzero.c \
 		ft_calloc.c \
@@ -49,27 +53,32 @@ SRC = ft_atoi.c \
 		get_next_line.c \
 		get_next_line_utils.c 
 
-CC = cc
-CFLAGS = -Wall -Wextra -Werror
-
 OBJ = ${SRC:.c=.o}
-NAME = libft.a
-OBONUS = ${SBONUS:.c=.o}
+
+RM = rm -rdf
+
+ERASE		=	\033[2K\r 
+YELLOW		=	\033[1;33m
+GREEN		=	\033[1;32m
+END			=	\033[0m
+
 all: ${NAME}
+
+%.o: %.c
+	$(CC) $(CFLAGS) -O2 -c $< -o $< -o $@
 
 ${NAME}: ${OBJ}
 	ar -rcs ${NAME} ${OBJ}
-
-bonus: ${OBONUS}
-
-${OBONUS}:
-	${CC} ${CFLAGS} -c $(SBONUS)
-	ar -rcs ${NAME} ${OBONUS}
+	@echo "$(GREEN)$(NAME) successfully compiled$(END)"
 
 clean:
-	rm -rf ${OBJ} ${OBONUS}
+	$(RM) $(OBJ)
+	@echo "$(YELLOW)$(OBJ) Object file removed$(END)"
 
 fclean: clean
-	rm -rf ${NAME}
+	$(RM) $(OBJ) $(NAME)
+	@echo "$(YELLOW)$(NAME) removed$(END)"
 
 re: fclean all
+
+.PHONY: all clean fclean re
